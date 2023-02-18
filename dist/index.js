@@ -12,6 +12,9 @@ function readTodos() {
         return [];
     return JSON.parse(todosJSON);
 }
+function saveTodo() {
+    localStorage.setItem("todos", JSON.stringify(todos));
+}
 function handleSubmit(e) {
     e.preventDefault();
     const newTodo = {
@@ -20,22 +23,20 @@ function handleSubmit(e) {
     };
     createTodo(newTodo);
     todos.push(newTodo);
-    localStorage.setItem("todos", JSON.stringify(todos));
+    saveTodo();
     input.value = '';
 }
 function createTodo(todo) {
     const newLI = document.createElement('li');
     const checkBox = document.createElement('input');
     checkBox.type = "checkbox";
+    checkBox.checked = todo.completed;
+    checkBox.addEventListener("change", function () {
+        todo.completed = checkBox.checked;
+        saveTodo();
+    });
     newLI.append(todo.text);
     newLI.append(checkBox);
     list?.append(newLI);
 }
 form.addEventListener("submit", handleSubmit);
-// btn.addEventListener("click", function() {
-//      alert(input.value);
-//      input.value = '';
-// });
-// let mystery: unknown = "hello World!"
-// type assertion "as"
-// const numChars = (mystery as string).length
